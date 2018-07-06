@@ -1,8 +1,8 @@
-var gulpVar = require("gulp"),
+var gulp = require("gulp"),
 watch = require("gulp-watch"),
 browserSync = require("browser-sync").create();
 
-gulpVar.task("watch", function() {
+gulp.task("watch", function() {
 
     browserSync.init({
         notify: false,
@@ -16,12 +16,20 @@ gulpVar.task("watch", function() {
     });
 
     watch("./app/assets/styles/**/*.css", function() {
-        gulpVar.start("cssInject");
+        gulp.start("cssInject");
+    });
+
+    watch("./app/assets/scripts/**/*.js", function() {
+        gulp.start("scriptsRefresh");
     });
 
 });
 
-gulpVar.task("cssInject", ['styles'], function() {
-    return gulpVar.src("./app/temp/styles/styles.css")
+gulp.task("cssInject", ['styles'], function() {
+    return gulp.src("./app/temp/styles/styles.css")
     .pipe(browserSync.stream());
+});
+
+gulp.task("scriptsRefresh", ["scripts"], function() {
+    browserSync.reload();
 });
